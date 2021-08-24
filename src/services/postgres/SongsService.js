@@ -9,16 +9,14 @@ class SongsService {
     this._pool = new Pool();
   }
 
-  async addSong({
-    title, year, performer, genre, duration,
-  }) {
+  async addSong(payload) {
     const songId = `song-${nanoid(16)}`;
     const insertedAt = new Date().toISOString();
-    const updatedAt = insertedAt;
+    // const updatedAt = insertedAt;
 
     const query = {
-      text: 'INSERT INTO songs VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id',
-      values: [songId, title, year, performer, genre, duration, insertedAt, updatedAt],
+      text: 'INSERT INTO songs VALUES($1, $2, $3, $4, $5, $6, $7, $7) RETURNING id',
+      values: [songId, ...Object.values(payload), insertedAt],
     };
 
     const result = await this._pool.query(query);
